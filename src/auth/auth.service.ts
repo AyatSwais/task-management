@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service.js';
@@ -18,9 +15,11 @@ export class AuthService {
   register(registerDto: RegisterDto) {
     const user = this.usersService.create(registerDto);
 
+    const { password, ...safeUser } = user;
+
     return {
       message: 'User registered successfully',
-      user,
+      user: safeUser,
     };
   }
 

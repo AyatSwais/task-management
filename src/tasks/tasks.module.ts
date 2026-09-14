@@ -4,10 +4,12 @@ import { TasksService } from './tasks.service.js';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports :[PassportModule.register({
-  defaultStrategy: 'jwt',
-}),],
+  imports: [
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
+  ],
   controllers: [TasksController],
-  providers: [TasksService]
+  providers: [TasksService],
 })
 export class TasksModule {}

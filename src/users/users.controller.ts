@@ -1,4 +1,4 @@
-import {CreateUserDto} from './dto/create-user.dto.js';
+import { CreateUserDto } from './dto/create-user.dto.js';
 import {
   Body,
   Controller,
@@ -6,22 +6,31 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard.js';
 
 import { UsersService } from './users.service.js';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    const users = this.usersService.findAll();
+
+    return users.map(({ password, ...user }) => user);
   }
 
   @Get(':id')
-  findById(@Param('id',ParseIntPipe) id: number) {
-    return this.usersService.findById(id);
+  findById(@Param('id', ParseIntPipe) id: number) {
+    const user = this.usersService.findById(id);
+
+    const { password, ...safeUser } = user;
+
+    return safeUser;
   }
 
   @Post()

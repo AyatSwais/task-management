@@ -4,26 +4,18 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class TaskLoggingInterceptor implements NestInterceptor {
-
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<any> {
-    const now = Date.now();
-    console.log(`Before Controller ${now}`);
-
-    
-
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      tap(() => {
-        console.log(
-         ` After Controller: ${Date.now() - now}ms `,
-        );
+      map((data) => {
+        return {
+          success: true,
+          data,
+        };
       }),
     );
   }

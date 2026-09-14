@@ -1,46 +1,50 @@
-import {CreateUserDto} from './dto/create-user.dto.js';
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
-private users = [
+  private users = [
     {
-    id: 1,
-    name: 'Ayat',
-    email: 'ayat@example.com',
-    password: '123456',
-    role: 'MANAGER',
+      id: 1,
+      name: 'Ayat',
+      email: 'ayat@example.com',
+      password: '123456',
+      role: 'MANAGER',
     },
     {
-    id: 2,
-    name: 'Ahmad',
-    email: 'ahmad@example.com',
-    password: '123456',
-    role: 'MEMBER',
+      id: 2,
+      name: 'Ahmad',
+      email: 'ahmad@example.com',
+      password: '123456',
+      role: 'MEMBER',
     },
-];
+  ];
 
-private nextId = 3;
+  private nextId = 3;
 
-findAll() {
+  findAll() {
     return this.users;
-}
+  }
 
-findById(id: number) {
+  findById(id: number) {
     const user = this.users.find((user) => user.id === id);
 
     if (!user) {
-    throw new NotFoundException(`User with id ${id} not found`);
+      throw new NotFoundException(`User with id ${id} not found`);
     }
 
     return user;
-}
+  }
 
   findByEmail(email: string) {
     return this.users.find((user) => user.email === email);
   }
 
-  create(userData:CreateUserDto) {
+  create(userData: CreateUserDto) {
     const existingUser = this.findByEmail(userData.email);
 
     if (existingUser) {
@@ -52,7 +56,7 @@ findById(id: number) {
       name: userData.name,
       email: userData.email,
       password: userData.password,
-      role: userData.role,
+      role: 'MEMBER',
     };
 
     this.users.push(newUser);
