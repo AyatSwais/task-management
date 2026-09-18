@@ -6,12 +6,14 @@ import { UsersModule } from './users/users.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { LoggerMiddleware } from './middleware/logger.middleware.js';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './prisma/prisma.module.js';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+      PrismaModule,
     TasksModule,
     UsersModule,
     AuthModule,

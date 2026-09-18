@@ -1,10 +1,54 @@
+// import {
+//   IsDateString,
+//   IsIn,
+//   IsInt,
+//   IsNotEmpty,
+//   IsOptional,
+//   IsString,
+// } from 'class-validator';
+
+// export class CreateTaskDto {
+//   @IsString()
+//   @IsNotEmpty()
+//   title: string;
+
+//   @IsString()
+//   @IsOptional()
+//   description?: string;
+
+//   @IsIn(['TODO', 'IN_PROGRESS', 'DONE'])
+//   @IsOptional()
+//   status?: string;
+
+//   @IsIn(['LOW', 'MEDIUM', 'HIGH'])
+//   @IsOptional()
+//   priority?: string;
+
+//   @IsInt()
+//   @IsOptional()
+//   assigneeId?: number;
+
+//   @IsString()
+//   @IsOptional()
+//   project?: string;
+
+//   @IsDateString()
+//   @IsOptional()
+//   dueDate?: string;
+// }
 import {
   IsDateString,
-  IsIn,
+  IsEnum,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
+
+import {
+  TaskPriority,
+  TaskStatus,
+} from '../../generated/prisma/client.js';
 
 export class CreateTaskDto {
   @IsString()
@@ -15,17 +59,17 @@ export class CreateTaskDto {
   @IsOptional()
   description?: string;
 
-  @IsIn(['TODO', 'IN_PROGRESS', 'DONE'])
+  @IsEnum(TaskStatus)
   @IsOptional()
-  status?: string;
+  status?: TaskStatus;
 
-  @IsIn(['LOW', 'MEDIUM', 'HIGH'])
+  @IsEnum(TaskPriority)
   @IsOptional()
-  priority?: string;
+  priority?: TaskPriority;
 
-  @IsString()
+  @IsInt()
   @IsOptional()
-  assignee?: string;
+  assigneeId?: number;
 
   @IsString()
   @IsOptional()
