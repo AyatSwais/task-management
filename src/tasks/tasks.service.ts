@@ -165,9 +165,16 @@ export class TasksService {
         ...(assigneeId !== undefined && { assigneeId }),
         ...(project && { project }),
       },
-      include: {
-        assignee: true,
-      },
+            include: {
+  assignee: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  },
+},
     });
   }
 
@@ -175,9 +182,16 @@ export class TasksService {
   async findOne(id: number) {
     const task = await this.prisma.task.findUnique({
       where: { id },
-      include: {
-        assignee: true,
-      },
+            include: {
+  assignee: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  },
+},
     });
 
     if (!task) {
@@ -201,9 +215,16 @@ export class TasksService {
           ? new Date(taskData.dueDate)
           : null,
       },
-      include: {
-        assignee: true,
-      },
+            include: {
+  assignee: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  },
+},
     });
   }
 
@@ -251,8 +272,15 @@ export class TasksService {
         }),
       },
       include: {
-        assignee: true,
-      },
+  assignee: {
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  },
+},
     });
   }
 

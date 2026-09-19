@@ -74,6 +74,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 import { Role } from '../generated/prisma/client.js';
 
 import { CreateUserDto } from './dto/create-user.dto.js';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -107,14 +108,17 @@ export class UsersService {
     if (existingUser) {
       throw new ConflictException('Email already exists');
     }
+     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    return this.prisma.user.create({
+ const user = await this.prisma.user.create({
       data: {
         name: userData.name,
         email: userData.email,
-        password: userData.password,
+        password: hashedPassword,
         role: Role.MEMBER,
       },
     });
+    const {password , ... safeUser} =user;
+    return safeUser;
   }
 }
